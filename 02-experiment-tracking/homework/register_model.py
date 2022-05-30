@@ -62,13 +62,17 @@ def run(data_path, log_top):
     )
     for run in runs:
         train_and_log_model(data_path=data_path, params=run.data.params)
+        
 
     # select the model with the lowest test RMSE
     experiment = client.get_experiment_by_name(EXPERIMENT_NAME)
-    # best_run = client.search_runs( ...  )[0]
+    # print(runs)
+    best_run = runs[0]
 
-    # register the best model
-    # mlflow.register_model( ... )
+    # # register the best model
+    run_id = best_run.info.run_id
+    print(run_id)
+    mlflow.register_model(f"runs:/{run_id}/model", EXPERIMENT_NAME)
 
 
 if __name__ == '__main__':

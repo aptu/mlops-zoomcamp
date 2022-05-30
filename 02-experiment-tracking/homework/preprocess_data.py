@@ -82,5 +82,6 @@ if __name__ == '__main__':
         help="the location where the resulting files will be saved."
     )
     args = parser.parse_args()
+    print(args)
 
     run(args.raw_data_path, args.dest_path)
