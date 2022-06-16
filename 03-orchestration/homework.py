@@ -1,3 +1,4 @@
+from ast import Sub
 import pandas as pd
 
 from sklearn.feature_extraction import DictVectorizer
@@ -113,4 +114,18 @@ def main(date="2021-08-15"):
         logger.info(f"Dv file size is: {os.path.getsize(path)}")
 
 
-main()
+from prefect.deployments import DeploymentSpec
+from prefect.orion.schemas.schedules import CronSchedule, IntervalSchedule
+from prefect.flow_runners import SubprocessFlowRunner
+from datetime import timedelta
+
+
+DeploymentSpec(
+    name="model-training",
+    flow_location='/Users/pandabaka/workspace/mlops-zoomcamp/03-orchestration/homework.py',
+    flow_runner=SubprocessFlowRunner(),
+    schedule=CronSchedule(cron="0 9 15 * *"),
+    # schedule=IntervalSchedule(interval=timedelta(minutes=5)),
+    tags=["ml"]
+)
+
